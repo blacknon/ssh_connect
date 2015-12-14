@@ -69,7 +69,7 @@ def ssh_connect(line_no):
         log_awk  = 'gawk \'{ print strftime("[%Y/%m/%d %H:%M:%S]") " " $0 } {system (" ")}\' >' + terminal_log
     else:
         log_tail = 'tail -f ' + tmp_log
-        log_awk  = 'gawk \'{ print strftime("[%Y/%m/%d %H:%M:%S]") " " $0 } {system (" ")}\' >' + terminal_log
+        log_awk  = 'awk \'{ print strftime("[%Y/%m/%d %H:%M:%S]") " " $0 } {system (" ")}\' >' + terminal_log
 
     get_log_command  = log_tail + ' | ' + log_awk + ' &'
     #subprocess.Popen(get_log_command, shell=True)
@@ -92,17 +92,19 @@ def ssh_connect(line_no):
         foo.sendline(connect_host_root_pass)
     foo.interact()
     #os.system('kill ' + log_pid + ' &')
-    os.system('ps -f| grep [t]ail | grep "' + log_tail + '" | awk \'{ print $2\'} | xargs kill')
+    os.system('ps -ef | grep [t]ail | grep "' + log_tail + '" | awk \'{ print $2\'} | xargs kill')
     os.remove(tmp_log)
  
 ############
 # 設定関連 #
 ############
 max_row      = 20
+base         = os.path.dirname(os.path.abspath(__file__))
 list_file    = './data.csv'
+list_file    = os.path.normpath(os.path.join(base, list_file))
 command_file = ''
-log_dir      = './log/'
-tmp_dir      = './tmp/'
+log_dir      = '/Users/uesugi/Script/log/'
+tmp_dir      = '/tmp/'
 now_time     = datetime.now().strftime('%Y%m%d_%H%M%S')
  
 ##################
