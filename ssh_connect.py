@@ -98,13 +98,17 @@ def ssh_connect(line_no):
 ############
 # 設定関連 #
 ############
-max_row      = 20
+curses.setupterm()
+max_row      = int(curses.tigetnum("lines") - 4)
+max_column   = int(curses.tigetnum("cols") - 4)
+#max_row      = 20
+#max_column   = 100
 base         = os.path.dirname(os.path.abspath(__file__))
-list_file    = './data.csv'
+list_file    = './host.list'
 list_file    = os.path.normpath(os.path.join(base, list_file))
 command_file = ''
-log_dir      = '/Users/uesugi/Script/log/'
-tmp_dir      = '/tmp/'
+log_dir      = './log/'
+tmp_dir      = './tmp/'
 now_time     = datetime.now().strftime('%Y%m%d_%H%M%S')
  
 ##################
@@ -121,7 +125,7 @@ highlightText = curses.color_pair( 1 )
 normalText    = curses.A_NORMAL
 screen.border( 0 )
 curses.curs_set( 0 )
-box           = curses.newwin( max_row + 2, 100, 1, 1 )
+box           = curses.newwin( max_row + 2, max_column , 1, 2 )
 box.box()
  
 ##################
